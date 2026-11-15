@@ -8,6 +8,7 @@
     "seed": "node seed.js"
   },
   "dependencies": {
-    "better-sqlite3": "^13.2.0"
+    "better-sqlite3": "^13.2.0",
+    "express": "^5.3.0"
   }
 }
