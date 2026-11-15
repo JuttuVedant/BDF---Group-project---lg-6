@@ -1,0 +1,10 @@
+{
+  "name": "trekgear-hub",
+  "version": "1.0.0",
+  "description": "TrekGear Hub - tent rental API (Express + SQLite)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  }
+}
