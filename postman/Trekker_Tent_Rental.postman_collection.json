@@ -1,0 +1,819 @@
+{
+  "info": {
+    "_postman_id": "7c5b7a3e-9b2f-4f1e-a1c8-4b5c2d7f9011",
+    "name": "Trekker and Tent Rental API",
+    "description": "Postman collection for the Trekker and Tent Rental API. Review the README placeholders and confirm actual route behavior after the team code is merged.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "ashaTrekkerId",
+      "value": "1"
+    },
+    {
+      "key": "raviTrekkerId",
+      "value": "2"
+    },
+    {
+      "key": "tent8Id",
+      "value": "8"
+    },
+    {
+      "key": "rentalAshaId",
+      "value": ""
+    },
+    {
+      "key": "rentedDate",
+      "value": "2026-11-15"
+    },
+    {
+      "key": "returnedDate",
+      "value": "2026-11-16"
+    },
+    {
+      "key": "tentSize",
+      "value": "Large"
+    }
+  ],
+  "item": [
+    {
+      "name": "Trekkers",
+      "item": [
+        {
+          "name": "GET Trekkers \u2014 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/trekkers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "trekkers"
+              ]
+            },
+            "description": "List all trekkers."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Trekker \u2014 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/trekkers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "trekkers"
+              ]
+            },
+            "description": "Create a trekker. Change the name if it already exists.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Asha\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const data = pm.response.json();",
+                  "if (data && data.id !== undefined) pm.collectionVariables.set('ashaTrekkerId', data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Trekker missing name \u2014 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/trekkers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "trekkers"
+              ]
+            },
+            "description": "Validation error: name is required.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tents",
+      "item": [
+        {
+          "name": "GET Tents \u2014 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tents"
+              ]
+            },
+            "description": "List all tents."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Tent \u2014 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tents"
+              ]
+            },
+            "description": "Create a tent. Avoid duplicate data if the database has unique constraints.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Test Tent\",\n  \"size\": \"Large\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Tent missing fields \u2014 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tents"
+              ]
+            },
+            "description": "Validation error: size is required.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Incomplete Tent\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Search Tents by size \u2014 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tents?size={{tentSize}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tents?size={{tentSize}}"
+              ]
+            },
+            "description": "Search tents using the size collection variable."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rentals",
+      "item": [
+        {
+          "name": "GET Rentals \u2014 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "List all rental records."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Rental \u2014 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Create a rental. Confirm IDs exist and the tent is not already actively rented.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"{{ashaTrekkerId}}\",\n  \"tent_id\": \"{{tent8Id}}\",\n  \"rented_date\": \"{{rentedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Rental missing required field \u2014 400",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Validation error: rented_date is required.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"{{ashaTrekkerId}}\",\n  \"tent_id\": \"{{tent8Id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Rental unknown trekker or tent \u2014 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Not-found case: use a trekker ID that does not exist.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"999999\",\n  \"tent_id\": \"{{tent8Id}}\",\n  \"rented_date\": \"{{rentedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Return Rental \u2014 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/{{rentalAshaId}}/return",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "{{rentalAshaId}}",
+                "return"
+              ]
+            },
+            "description": "Return an existing active rental. Set rentalAshaId to the correct active rental ID.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returned_date\": \"{{returnedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Return unknown Rental \u2014 404",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/999999/return",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "999999",
+                "return"
+              ]
+            },
+            "description": "Not-found case: rental ID must not exist.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returned_date\": \"{{returnedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Rental Details Join \u2014 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "details"
+              ]
+            },
+            "description": "Join rentals with trekkers and tents."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Twist tests \u2014 run in order",
+      "description": "Run Twist 1, Twist 2, Twist 3A, then Twist 3B. Do not run these requests out of order.",
+      "item": [
+        {
+          "name": "TWIST 1 \u2014 Rent Tent 8 to Asha \u2014 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Run first. Expected: Asha successfully rents Tent 8. Save returned rental ID for the return request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"{{ashaTrekkerId}}\",\n  \"tent_id\": \"{{tent8Id}}\",\n  \"rented_date\": \"{{rentedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const data = pm.response.json();",
+                  "if (data && data.id !== undefined) pm.collectionVariables.set('rentalAshaId', data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TWIST 2 \u2014 Rent Tent 8 to Ravi \u2014 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Run second, immediately after Twist 1. Expected JSON message: \"Tent 8 is already rented\".",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"{{raviTrekkerId}}\",\n  \"tent_id\": \"{{tent8Id}}\",\n  \"rented_date\": \"{{rentedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Conflict message matches', function () {",
+                  "    pm.expect(pm.response.json().message).to.eql('Tent 8 is already rented');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TWIST 3A \u2014 Return Tent 8 from Asha \u2014 200",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals/{{rentalAshaId}}/return",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals",
+                "{{rentalAshaId}}",
+                "return"
+              ]
+            },
+            "description": "Run after Twist 2. This releases Tent 8 before Ravi rents it.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returned_date\": \"{{returnedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "TWIST 3B \u2014 Rent Tent 8 to Ravi after return \u2014 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rentals",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rentals"
+              ]
+            },
+            "description": "Run immediately after Twist 3A. Expected: Ravi successfully rents the returned Tent 8.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trekker_id\": \"{{raviTrekkerId}}\",\n  \"tent_id\": \"{{tent8Id}}\",\n  \"rented_date\": \"{{returnedDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
